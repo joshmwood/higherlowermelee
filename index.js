@@ -127,6 +127,7 @@ function drawLeftVideo(video) {
     let left = document.createElement("div");
     let thumbnail = document.createElement("img");
     let title = document.createElement("h2");
+    title.classList.add("title")
     let viewCount = document.createElement("p");
     viewCount.classList.add("view-count");
     let views = document.createElement("p");
@@ -156,6 +157,7 @@ function drawRightVideo(video) {
     let right = document.createElement("div");
     let thumbnail2 = document.createElement("img");
     let title2 = document.createElement("h2");
+    title2.classList.add("title");
 
 
     let higherButton = document.createElement("div");
@@ -257,7 +259,7 @@ function countupTimer(start, end, increment, guess) {
                 drawLeftVideo(game.leftVideo);
                 document.getElementById("right").remove();
                 drawRightVideo(game.rightVideo);
-            }, 1000)
+            }, 1500)
 
         }
         else {
@@ -266,7 +268,7 @@ function countupTimer(start, end, increment, guess) {
 
             setTimeout(() => {
                 endGame();
-            }, 1000)
+            }, 1500)
         }
     }
 

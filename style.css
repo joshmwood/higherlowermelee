@@ -8,9 +8,9 @@ body {
 .game {
     height: 95vh;
     display: flex;
-    background-image: url(/img/bg/bg-repeatable.png);
-    background-size: 12%;
+    background-color: rgb(43, 42, 83)
 }
+
 
 .bottom-bar {
     height: 5vh;
@@ -91,7 +91,7 @@ body {
 }
 
 .lower:hover {
-    background-color: #771010
+    background-color: #771010;
 }
 
 .play-again {
@@ -111,19 +111,22 @@ img {
 .view-count {
     font-size: 36px;
     font-weight: bold;
-    margin: 0
+    margin: 0;
+
 }
 
-#result {
-    transition: transform 250ms, opacity 400ms;
+#result {}
+
+@keyframes example {
+    from {
+        background-color: red;
+    }
+
+    to {
+        background-color: yellow;
+    }
 }
 
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
+.title {
+    margin: 15px 125px;
 }
