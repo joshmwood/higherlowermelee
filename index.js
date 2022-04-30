@@ -48,12 +48,14 @@ function playGame() {
     }
     game.rightVideo = newVideo;
 
-    drawLeftVideo(game.leftVideo);
+    let firstVideo = getInitialVideoDiv();
+    gameArea.appendChild(firstVideo);
 
-    drawRightVideo(game.rightVideo);
+
+    let rightDiv = getNewVideoDiv();
+    gameArea.appendChild(rightDiv);
 
 }
-
 
 function answer(guess) {
 
@@ -66,13 +68,11 @@ function answer(guess) {
     document.getElementById("lowerButton").remove();
 
     // randomize the increment to build suspense on count up
-
     let increment = Math.floor((end - start) / 30);
 
     console.log(`start: ${start},end: ${end}, increment: ${increment} `);
     // count up the views
     countupTimer(start, end, increment, guess);
-
 }
 
 function getResult(guess) {
@@ -107,7 +107,6 @@ function generateNewVideo() {
 
     let newVideo = getVideo();
 
-
     while (game.leftVideo == newVideo) {
         newVideo = getVideo();
     }
@@ -121,10 +120,11 @@ function getVideo() {
     return meleeSets2[num];
 }
 
-// draws the "left" video, the video that the "right" video, the one being voted on, is compared to.
-function drawLeftVideo(video) {
-    // create DOM Element
-    let left = document.createElement("div");
+function getInitialVideoDiv() {
+
+    let video = game.leftVideo;
+
+    let videoDiv = document.createElement("div");
     let thumbnail = document.createElement("img");
     let title = document.createElement("h2");
     title.classList.add("title")
@@ -139,27 +139,30 @@ function drawLeftVideo(video) {
     viewCount.innerText = `${viewCountCommas}`;
     views.innerText = "views";
 
-    left.appendChild(thumbnail);
-    left.appendChild(title);
-    left.appendChild(viewCount);
-    left.appendChild(views);
+    videoDiv.appendChild(thumbnail);
+    videoDiv.appendChild(title);
+    videoDiv.appendChild(viewCount);
+    videoDiv.appendChild(views);
 
-    left.className = "left"
-    left.id = "left";
+    videoDiv.className = "videoDiv"
+    videoDiv.id = "video1";
 
-    let gameArea = document.getElementById("game");
-    gameArea.appendChild(left);
+    return videoDiv;
 }
 
+function getNewVideoDiv() {
 
-function drawRightVideo(video) {
-    // create the rightVideos' DOM Element
-    let right = document.createElement("div");
-    let thumbnail2 = document.createElement("img");
-    let title2 = document.createElement("h2");
-    title2.classList.add("title");
+    // get video from game object
+    // rightVideo is the property of the newly generated video
+    let video = game.rightVideo;
 
+    let videoDiv = document.createElement("div");
+    let thumbnail = document.createElement("img");
 
+    let title = document.createElement("h2");
+    title.classList.add("title");
+
+    // create buttons
     let higherButton = document.createElement("div");
     higherButton.id = "higherButton";
     higherButton.setAttribute("onclick", "answer('higher')");
@@ -176,24 +179,22 @@ function drawRightVideo(video) {
     answerDiv.id = "result";
     answerDiv.className = "view-count";
 
-    thumbnail2.src = `${video.picture.url}`;
-    title2.innerHTML = `${video.title}`;
-    higherButton.innerHTML = "Higher";
-    lowerButton.innerHTML = "Lower";
+    //populate elements with data
+    thumbnail.src = `${video.picture.url}`;
+    title.innerText = `${video.title}`;
+    higherButton.innerText = "Higher";
+    lowerButton.innerText = "Lower";
 
-    right.appendChild(thumbnail2);
-    right.appendChild(title2);
-    right.appendChild(higherButton);
-    right.appendChild(lowerButton);
-    right.appendChild(answerDiv);
+    //append divs
+    videoDiv.appendChild(thumbnail);
+    videoDiv.appendChild(title);
+    videoDiv.appendChild(higherButton);
+    videoDiv.appendChild(lowerButton);
+    videoDiv.appendChild(answerDiv);
+    videoDiv.classList.add("videoDiv");
 
-    right.className = "right";
-    right.id = "right";
-
-
-    let gameArea = document.getElementById("game");
-
-    gameArea.appendChild(right);
+    videoDiv.id = "video2";
+    return videoDiv;
 
 }
 
@@ -254,17 +255,43 @@ function countupTimer(start, end, increment, guess) {
                 }
                 document.getElementById("score").innerText = `Score: ${game.score}`;
 
-                generateNewVideo();
-                document.getElementById("left").remove();
-                drawLeftVideo(game.leftVideo);
-                document.getElementById("right").remove();
-                drawRightVideo(game.rightVideo);
+                generateNewVideo(); // this changes gamestate, game.rightVideo is a new video now.
+
+                let resultDiv = document.getElementById("result");
+                resultDiv.id = "";
+                let currentRight = document.getElementById("video2");
+                let newDiv = getNewVideoDiv();
+                currentRight.id = "";
+
+                let gameArea = document.getElementById("game");
+                gameArea.appendChild(newDiv);
+
+
+                currentRight.id = "";
+
+                // Wait for div to be rendered, takes a bit
+                setTimeout(() => {
+                    document.getElementById("video1").classList.add("offscreen");
+                    currentRight.classList.add("offscreen");
+                    newDiv.classList.add("offscreen");
+
+                    // delete the first div after it's offscreen, takes 1s or 1000ms, per stylesheet
+                    setTimeout(() => {
+                        document.getElementById("video1").remove();
+                        currentRight.classList.remove("offscreen");
+                        newDiv.classList.remove("offscreen");
+
+                        // change the ids
+                        currentRight.id = "video1";
+                    }, 1000)
+
+                }, 500)
+
             }, 1500)
 
         }
         else {
             console.log("Incorrect!");
-            // do stuff here before straight up ending the game, like "counting" the views
 
             setTimeout(() => {
                 endGame();
