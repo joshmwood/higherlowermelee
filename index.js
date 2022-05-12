@@ -125,7 +125,10 @@ function getInitialVideoDiv() {
     let video = game.leftVideo;
 
     let videoDiv = document.createElement("div");
+    let thumbnailDiv = document.createElement("div");
+    thumbnailDiv.classList.add("thumbnail-frame")
     let thumbnail = document.createElement("img");
+    thumbnailDiv.appendChild(thumbnail);
     let title = document.createElement("h2");
     title.classList.add("title")
     let viewCount = document.createElement("p");
@@ -139,7 +142,7 @@ function getInitialVideoDiv() {
     viewCount.innerText = `${viewCountCommas}`;
     views.innerText = "views";
 
-    videoDiv.appendChild(thumbnail);
+    videoDiv.appendChild(thumbnailDiv);
     videoDiv.appendChild(title);
     videoDiv.appendChild(viewCount);
     videoDiv.appendChild(views);
@@ -157,12 +160,19 @@ function getNewVideoDiv() {
     let video = game.rightVideo;
 
     let videoDiv = document.createElement("div");
+    let thumbnailDiv = document.createElement("div");
+    thumbnailDiv.classList.add("thumbnail-frame")
     let thumbnail = document.createElement("img");
+    thumbnailDiv.appendChild(thumbnail);
 
     let title = document.createElement("h2");
     title.classList.add("title");
 
     // create buttons
+
+    // create a container for buttons so media queries can change flex direction
+    let buttonContainer = document.createElement("div");
+    buttonContainer.classList.add("button-container");
     let higherButton = document.createElement("div");
     higherButton.id = "higherButton";
     higherButton.setAttribute("onclick", "answer('higher')");
@@ -186,10 +196,11 @@ function getNewVideoDiv() {
     lowerButton.innerText = "Lower";
 
     //append divs
-    videoDiv.appendChild(thumbnail);
+    videoDiv.appendChild(thumbnailDiv);
     videoDiv.appendChild(title);
-    videoDiv.appendChild(higherButton);
-    videoDiv.appendChild(lowerButton);
+    buttonContainer.appendChild(higherButton);
+    buttonContainer.appendChild(lowerButton);
+    videoDiv.appendChild(buttonContainer);
     videoDiv.appendChild(answerDiv);
     videoDiv.classList.add("videoDiv");
 
