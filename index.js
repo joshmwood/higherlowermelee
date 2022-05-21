@@ -225,8 +225,10 @@ function endGame() {
     gameArea.classList.remove("in-game");
     console.log("You lose!");
 
+
+
     let div = document.createElement("div");
-    div.innerText = "Thanks for Playing!"
+    div.innerText = "unlucky."
     div.classList.add("play-again");
     div.id = "playAgain";
     gameArea.appendChild(div);
@@ -239,7 +241,7 @@ function endGame() {
 
 
     let button = document.createElement("div");
-    button.innerText = "Play Again?"
+    button.innerText = "Play Again"
     button.classList.add("button");
     button.id = "startGame";
     button.addEventListener("click", playGame);
