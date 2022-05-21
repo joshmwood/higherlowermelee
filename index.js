@@ -64,8 +64,7 @@ function answer(guess) {
     let end = parseInt(game.rightVideo.views);
 
     //disable buttons pre-countup
-    document.getElementById("higherButton").remove();
-    document.getElementById("lowerButton").remove();
+    document.getElementById("buttonContainer").remove();
 
     // randomize the increment to build suspense on count up
     let increment = Math.floor((end - start) / 30);
@@ -131,6 +130,8 @@ function getInitialVideoDiv() {
     thumbnailDiv.appendChild(thumbnail);
     let title = document.createElement("h2");
     title.classList.add("title")
+    thumbnailDiv.appendChild(title);
+
     let viewCount = document.createElement("p");
     viewCount.classList.add("view-count");
     let views = document.createElement("p");
@@ -143,7 +144,6 @@ function getInitialVideoDiv() {
     views.innerText = "views";
 
     videoDiv.appendChild(thumbnailDiv);
-    videoDiv.appendChild(title);
     videoDiv.appendChild(viewCount);
     videoDiv.appendChild(views);
 
@@ -168,18 +168,21 @@ function getNewVideoDiv() {
     let title = document.createElement("h2");
     title.classList.add("title");
 
+    thumbnailDiv.appendChild(title);
+
     // create buttons
 
     // create a container for buttons so media queries can change flex direction
     let buttonContainer = document.createElement("div");
     buttonContainer.classList.add("button-container");
-    let higherButton = document.createElement("div");
+    buttonContainer.id = "buttonContainer";
+    let higherButton = document.createElement("button");
     higherButton.id = "higherButton";
     higherButton.setAttribute("onclick", "answer('higher')");
     higherButton.classList.add("button-secondary");
     higherButton.classList.add("higher");
 
-    let lowerButton = document.createElement("div");
+    let lowerButton = document.createElement("button");
     lowerButton.id = "lowerButton";
     lowerButton.setAttribute("onclick", "answer('lower')");
     lowerButton.classList.add("button-secondary");
@@ -189,19 +192,22 @@ function getNewVideoDiv() {
     answerDiv.id = "result";
     answerDiv.className = "view-count";
 
+    let views = document.createElement("p");
+    views.innerText = "views";
+
     //populate elements with data
     thumbnail.src = `${video.picture.url}`;
     title.innerText = `${video.title}`;
-    higherButton.innerText = "Higher";
-    lowerButton.innerText = "Lower";
+    higherButton.innerText = "↑ Higher";
+    lowerButton.innerText = "↓ Lower";
 
     //append divs
     videoDiv.appendChild(thumbnailDiv);
-    videoDiv.appendChild(title);
     buttonContainer.appendChild(higherButton);
     buttonContainer.appendChild(lowerButton);
     videoDiv.appendChild(buttonContainer);
     videoDiv.appendChild(answerDiv);
+    videoDiv.appendChild(views);
     videoDiv.classList.add("videoDiv");
 
     videoDiv.id = "video2";

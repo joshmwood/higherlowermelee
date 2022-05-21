@@ -17,6 +17,7 @@ body {
         flex-direction: column;
     }
 
+
 }
 
 .bottom-bar {
@@ -179,16 +180,17 @@ img {
 
 
 @media only screen and (max-width: 600px) {
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+
 
     .thumbnail-frame {
-        width: 75%;
+        height: 17.9vw;
+        width: 32vw;
+        overflow: hidden;
     }
 
+    .thumbnail-frame img {
+        width: 100%;
+    }
 }
 
 .view-count {
