@@ -24,6 +24,8 @@ function playGame() {
 
     // change the apperance of the game area
     document.getElementById("startGame").remove();
+    document.getElementById("header").remove();
+
 
     // if clicked through Play Again, clears that from the DOM
     if (document.getElementById("playAgain")) {
