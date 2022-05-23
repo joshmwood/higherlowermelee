@@ -5,8 +5,11 @@ const myStorage = window.localStorage;
 const game = {
     leftVideo: null,
     rightVideo: null,
-    score: 0
+    score: 0,
+    playedVideos: []
 };
+
+
 
 if (myStorage.getItem("highscore")) {
     console.log(myStorage.getItem("highscore"));
@@ -18,8 +21,10 @@ else {
 
 function playGame() {
 
-    // reset the score
+    // reset the score, reset the playedVideos array
     game.score = 0;
+    game.playedVideos = [];
+
     document.getElementById("score").innerText = `Score: ${game.score}`;
 
     // change the apperance of the game area
@@ -44,18 +49,22 @@ function playGame() {
     gameArea.classList.remove("start");
     gameArea.classList.add("in-game")
 
-    // get a random video
-    game.leftVideo = getVideo();
+    // get a random video, add it to the array of "played videos", so it can't pop up again
+    let initialVideo = getVideo();
+    game.leftVideo = initialVideo;
+    game.playedVideos.push(initialVideo);
 
     // get unique second video
     let newVideo = getVideo();
     while (game.leftVideo == newVideo) {
         newVideo = getVideo();
     }
-    game.rightVideo = newVideo;
 
-    let firstVideo = getInitialVideoDiv();
-    gameArea.appendChild(firstVideo);
+    game.rightVideo = newVideo;
+    game.playedVideos.push(newVideo);
+
+    let firstVideoDiv = getInitialVideoDiv();
+    gameArea.appendChild(firstVideoDiv);
 
 
     let rightDiv = getNewVideoDiv();
@@ -116,8 +125,22 @@ function generateNewVideo() {
         newVideo = getVideo();
     }
 
+    while (game.playedVideos.indexOf(newVideo) != -1) {
+        newVideo = getVideo();
+    }
+    // add the newVideos to an array of "played videos", so it can't appear again
+    // in the same play session
     game.rightVideo = newVideo;
+    game.playedVideos.push(newVideo);
+
+    // check if all videos have appeared in the dataset so far
+    if (game.playedVideos.length >= meleeSets2.length) {
+        // clear the playedVideos property so the game can be played endlessly
+        game.playedVideos = [];
+    }
+
 }
+
 
 // gets a random video
 function getVideo() {
@@ -204,8 +227,8 @@ function getNewVideoDiv() {
     //populate elements with data
     thumbnail.src = `${video.picture.url}`;
     title.innerText = `${video.title}`;
-    higherButton.innerText = "↑ Higher";
-    lowerButton.innerText = "↓ Lower";
+    higherButton.innerText = "↑ HIGHER";
+    lowerButton.innerText = "↓ LOWER";
 
     //append divs
     videoDiv.appendChild(thumbnailDiv);
@@ -226,7 +249,7 @@ function endGame() {
 
 
     let gameArea = document.getElementById("game")
-    gameArea.innerHTML = "";
+    gameArea.innerText = "";
     gameArea.classList.add("start");
     gameArea.classList.remove("in-game");
     console.log("You lose!");
